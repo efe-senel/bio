@@ -355,4 +355,30 @@ n:`
 <h3>Bilgi işlem nasıl kurulur? (3 aşama)</h3>
 <p><b>Yol haritası</b>, <b>kurumsal ihtiyaçlar tespit edildikten sonra</b> çıkarılır ve 3 aşamada adım adım uygulanır.</p>
 <div class="grid3">
-<div class="mini
+</div>
+<div class="box tip">Bu konunun devamı kaynak dosyada eksik olduğundan yalnızca mevcut notlar gösterilir.</div>
+`});
+const view=document.getElementById('view'),side=document.getElementById('side'),tt=document.getElementById('tt');
+function safe(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function render(){
+ const id=Number(new URLSearchParams(location.search).get('konu'));
+ const item=T.find(t=>t.id===id);
+ side.innerHTML='<div class="brand"><div class="k">Sınav Çalışma Rehberi</div><div class="t">Bilgi İşlem Organizasyonu</div></div>'+
+ '<div class="navsec">Konular</div><nav class="nav"><a href="./" class="'+(!item?'on':'')+'"><span class="num">⌂</span><span class="lbl">Ana Sayfa</span></a>'+
+ T.map(t=>'<a href="?konu='+t.id+'" class="'+(item?.id===t.id?'on':'')+'"><span class="num">'+t.id+'</span><span class="lbl">'+safe(t.s)+'</span></a>').join('')+
+ '</nav><div class="side-foot"><button id="themeBtn" type="button">Temayı Değiştir</button></div>';
+ document.getElementById('themeBtn').onclick=()=>{document.documentElement.classList.toggle('dark');try{localStorage.setItem('bio-theme',document.documentElement.classList.contains('dark')?'dark':'light')}catch(e){}};
+ side.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>document.body.classList.remove('nav-open')));
+ if(item){
+  tt.textContent=item.s;
+  view.innerHTML='<div class="eyebrow">Konu '+item.id+'</div><h1>'+safe(item.t)+'</h1><p class="lead">Sınav çalışma notları</p><div class="tabs"><a class="on" href="?konu='+item.id+'">Konu Anlatımı</a><a href="./">Tüm Konular</a></div><article class="rv">'+item.n+'</article><div class="pager"><a href="./">← Tüm konulara dön</a></div>';
+ }else{
+  tt.textContent='Bilgi İşlem Organizasyonu';
+  view.innerHTML='<div class="hero"><div class="eyebrow">Sınav Çalışma Rehberi</div><h1>Bilgi İşlem Organizasyonu</h1><p>Ders notlarını konu konu incele.</p><div class="stats"><div class="stat"><b>'+T.length+'</b><span>Mevcut konu</span></div></div></div><h2>Konular</h2><div class="tgrid">'+T.map(t=>'<a class="tcard" href="?konu='+t.id+'"><div class="n">KONU '+t.id+'</div><div class="ti">'+safe(t.t)+'</div><div class="meta">Notları aç →</div></a>').join('')+'</div><div class="box info">Kaynak dosyada yalnızca kurtarılabilen konular gösteriliyor.</div>';
+ }
+}
+try{if(localStorage.getItem('bio-theme')==='dark')document.documentElement.classList.add('dark')}catch(e){}
+render();
+</script>
+</body>
+</html>
