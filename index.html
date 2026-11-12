@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bilgi İşlem Organizasyonu — Sınav Çalışma Rehberi</title>
+<style>
+:root{
+  --bg:#f5f2ea; --panel:#fffdf8; --panel2:#faf7f0; --ink:#1c2230; --muted:#5f6778; --line:#e4ddcd;
+  --accent:#c2410c; --accent-ink:#fff; --accent-soft:#fcebdd; --navy:#1e3a5f; --navy-soft:#e6edf6;
+  --ok:#15803d; --ok-soft:#e5f5ea; --bad:#b91c1c; --bad-soft:#fbe8e8; --warn-soft:#fff6db; --warn:#8a6100;
+  --side:#162036; --side-ink:#dbe0ee; --side-muted:#8e99b4; --side-hover:#1f2c48; --side-active:#2a3a5f;
+  --r:12px; --shadow:0 1px 2px rgba(20,30,50,.05),0 6px 20px rgba(20,30,50,.06);
+  --font: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --serif: Georgia, "Times New Roman", serif;
+}
+html.dark{
+  --bg:#10141d; --panel:#171d2a; --panel2:#1b2232; --ink:#e6e9f1; --muted:#9aa3b7; --line:#283043;
+  --accent:#fb8c4c; --accent-ink:#1a1006; --accent-soft:#33200f; --navy:#9dbbe6; --navy-soft:#1c2a40;
+  --ok:#4ade80; --ok-soft:#12291b; --bad:#f87171; --bad-soft:#2e1515; --warn-soft:#2c2410; --warn:#f2c94c;
+  --side:#0b0f17; --side-hover:#151c2b; --side-active:#1e2840;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font-family:inherit;font-size:inherit;color:inherit}
+
+/* ---------- layout ---------- */
+.app{display:grid;grid-template-columns:300px 1fr;min-height:100vh}
+.side{background:var(--side);color:var(--side-ink);position:sticky;top:0;height:100vh;overflow-y:auto;padding:22px 14px 30px}
+.brand{padding:4px 10px 18px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:12px}
+.brand .k{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--side-muted)}
+.brand .t{font-family:var(--serif);font-size:21px;line-height:1.2;color:#fff;margin-top:4px}
+.navsec{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--side-muted);padding:14px 10px 6px}
+.nav a{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:8px;text-decoration:none;font-size:14px;color:var(--side-ink);line-height:1.3}
+.nav a:hover{background:var(--side-hover)}
+.nav a.on{background:var(--side-active);color:#fff}
+.nav .num{flex:0 0 26px;height:26px;border-radius:7px;background:rgba(255,255,255,.07);display:grid;place-items:center;font-size:12px;font-weight:600;color:var(--side-muted)}
+.nav a.on .num{background:var(--accent);color:#fff}
+.nav .lbl{flex:1}
+.nav .sc{font-size:11px;padding:2px 7px;border-radius:20px;background:rgba(255,255,255,.08);color:var(--side-muted);white-space:nowrap}
+.nav .sc.g{background:rgba(74,222,128,.18);color:#86efac}
+.nav .sc.m{background:rgba(251,191,36,.18);color:#fcd34d}
+.nav .sc.b{background:rgba(248,113,113,.18);color:#fca5a5}
+.side-foot{padding:16px 10px 0;margin-top:14px;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:8px;flex-wrap:wrap}
+.side-foot button{background:rgba(255,255,255,.07);border:0;border-radius:8px;padding:7px 10px;color:var(--side-ink);cursor:pointer;font-size:13px}
+.side-foot button:hover{background:rgba(255,255,255,.14)}
+
+.main{min-width:0}
+.topbar{display:none}
+.wrap{max-width:900px;margin:0 auto;padding:36px 28px 90px}
+
+/* ---------- typography ---------- */
+h1{font-family:var(--serif);font-weight:700;font-size:36px;line-height:1.15;margin:6px 0 8px;letter-spacing:-.01em}
+h2{font-family:var(--serif);font-size:25px;margin:34px 0 10px}
+h3{font-size:18px;margin:30px 0 10px;color:var(--navy);display:flex;align-items:center;gap:10px}
+h3::before{content:"";width:6px;height:18px;border-radius:3px;background:var(--accent);flex:0 0 auto}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.lead{color:var(--muted);font-size:17px;margin:0 0 6px}
+p{margin:8px 0}
+ul,ol{padding-left:22px;margin:8px 0}
+li{margin:4px 0}
+b,strong{font-weight:650}
+code,.mono{font-family:Consolas,"Courier New",monospace;font-size:.92em;background:var(--panel2);border:1px solid var(--line);padding:1px 6px;border-radius:5px}
+.muted{color:var(--muted)}
+
+/* ---------- cards & boxes ---------- */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:20px 22px}
+.box{border-radius:var(--r);padding:14px 18px;margin:16px 0;border:1px solid var(--line);background:var(--panel)}
+.box.z{background:var(--accent-soft);border-color:transparent;border-left:4px solid var(--accent)}
+.box.tip{background:var(--warn-soft);border-color:transparent;border-left:4px solid #e0a800}
+.box.info{background:var(--navy-soft);border-color:transparent;border-left:4px solid var(--navy)}
+.box .bt{font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.box.z .bt{color:var(--accent)} .box.tip .bt{color:var(--warn)} .box.info .bt{color:var(--navy)}
+.box ul{margin:4px 0}
+
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14.5px;background:var(--panel);border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+th,td{padding:9px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{background:var(--navy);color:#fff;font-weight:600;font-size:13.5px}
+html.dark th{background:#24324d}
+tr:last-child td{border-bottom:0}
+tbody tr:nth-child(even) td{background:var(--panel2)}
+.tw{overflow-x:auto}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.mini{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.mini .h{font-weight:700;margin-bottom:4px;color:var(--navy)}
+.mini.sw-s{border-top:4px solid #16a34a} .mini.sw-w{border-top:4px solid #dc2626}
+.mini.sw-o{border-top:4px solid #2563eb} .mini.sw-t{border-top:4px solid #d97706}
+
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0}
+.flow span{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 11px;font-size:14px;font-weight:550}
+.flow i{font-style:normal;color:var(--accent);font-weight:700}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--navy-soft);color:var(--navy);margin:2px 2px 2px 0}
+
+/* ---------- topic header & tabs ---------- */
+.thead{margin-bottom:8px}
+.tabs{display:flex;gap:6px;margin:20px 0 6px;border-bottom:1px solid var(--line)}
+.tabs a{padding:10px 16px;text-decoration:none;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-1px}
+.tabs a.on{color:var(--ink);border-color:var(--accent)}
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:40px}
+.pager a{flex:1;text-decoration:none;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 16px}
+.pager a:hover{border-color:var(--accent)}
+.pager small{display:block;color:var(--muted);font-size:12px}
+.pager .r{text-align:right}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--panel);padding:10px 16px;border-radius:10px;cursor:pointer;font-weight:600;text-decoration:none}
+.btn:hover{border-color:var(--accent)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.pri:hover{filter:brightness(1.06)}
+.btn.sm{padding:6px 12px;font-size:14px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+/* ---------- home ---------- */
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#2b4c7a 100%);color:#fff;border-radius:16px;padding:30px 30px 26px;margin-bottom:22px;position:relative;overflow:hidden}
+html.dark .hero{background:linear-gradient(135deg,#1b2a45 0%,#24375c 100%)}
+.hero h1{color:#fff;margin-top:4px}
+.hero p{color:#d6e0f0;max-width:620px}
+.hero .eyebrow{color:#fdba74}
+.stats{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
+.stat{background:rgba(255,255,255,.1);border-radius:10px;padding:10px 16px;min-width:120px}
+.stat b{display:block;font-size:24px;font-family:var(--serif)}
+.stat span{font-size:12.5px;color:#c9d5ea}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-top:14px}
+.tcard{display:block;text-decoration:none;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:transform .12s,border-color .12s}
+.tcard:hover{transform:translateY(-2px);border-color:var(--accent)}
+.tcard .n{font-size:12px;color:var(--accent);font-weight:700;letter-spacing:.08em}
+.tcard .ti{font-weight:650;margin:2px 0 8px;line-height:1.3}
+.bar{height:6px;background:var(--panel2);border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;background:var(--ok);border-radius:6px}
+.tcard .meta{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);margin-top:6px}
+
+/* ---------- quiz ---------- */
+.qhead{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 0;border-bottom:1px solid var(--line);margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.score{font-weight:700}
+.score .ok{color:var(--ok)} .score .bad{color:var(--bad)}
+.q{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0;box-shadow:var(--shadow)}
+.q .qn{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;margin-bottom:4px;display:flex;justify-content:space-between;gap:8px}
+.q .qt{font-weight:600;font-size:16.5px;margin-bottom:10px}
+.opts{display:grid;gap:7px}
+.opt{display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%;background:var(--panel2);border:1.5px solid var(--line);border-radius:9px;padding:9px 12px;cursor:pointer;line-height:1.4}
+.opt:hover:not([disabled]){border-color:var(--navy)}
+.opt .L{flex:0 0 24px;height:24px;border-radius:6px;display:grid;place-items:center;font-weight:700;font-size:13px;background:var(--panel);border:1px solid var(--line)}
+.opt.sel{border-color:var(--navy);background:var(--navy-soft)}
+.opt.sel .L{background:var(--navy);color:#fff;border-color:var(--navy)}
+.opt.cor{border-color:var(--ok);background:var(--ok-soft)}
+.opt.cor .L{background:var(--ok);color:#fff;border-color:var(--ok)}
+.opt.wr{border-color:var(--bad);background:var(--bad-soft)}
+.opt.wr .L{background:var(--bad);color:#fff;border-color:var(--bad)}
+.opt[disabled]{cursor:default}
+.exp{margin-top:10px;font-size:14.5px;padding:10px 12px;border-radius:8px;background:var(--navy-soft);display:none}
+.exp.show{display:block}
+.exp b.ok{color:var(--ok)} .exp b.bad{color:var(--bad)}
+.result{text-align:center;padding:26px}
+.result .big{font-family:var(--serif);font-size:54px;font-weight:700;line-height:1}
+.chk{display:flex;gap:8px;align-items:center;padding:6px 8px;border-radius:8px;cursor:pointer;font-size:14px}
+.chk:hover{background:var(--panel2)}
+.chkgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:2px;margin:10px 0}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{border:0;background:var(--panel);padding:8px 14px;cursor:pointer;font-weight:600}
+.seg button.on{background:var(--navy);color:#fff}
+.timer{font-variant-numeric:tabular-nums;color:var(--muted);font-weight:600}
+
+/* ---------- review ---------- */
+.rv h3{margin-top:26px}
+.rv ul{columns:2;column-gap:28px}
+.rv li{break-inside:avoid}
+
+/* ---------- mobile ---------- */
+@media (max-width:900px){
+  .app{grid-template-columns:1fr}
+  .side{position:fixed;left:0;top:0;bottom:0;width:290px;z-index:50;transform:translateX(-100%);transition:transform .2s}
+  body.nav-open .side{transform:none;box-shadow:0 0 0 100vmax rgba(0,0,0,.45)}
+  .topbar{display:flex;position:sticky;top:0;z-index:40;background:var(--side);color:#fff;align-items:center;gap:12px;padding:10px 14px}
+  .topbar button{background:rgba(255,255,255,.1);border:0;border-radius:8px;width:38px;height:38px;color:#fff;font-size:20px;cursor:pointer}
+  .topbar .tt{font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .wrap{padding:22px 16px 80px}
+  h1{font-size:28px}
+  .grid2,.grid3{grid-template-columns:1fr}
+  .rv ul{columns:1}
+  .qhead{top:58px}
+}
+@media print{
+  .side,.topbar,.tabs,.pager,.qhead{display:none!important}
+  .app{display:block}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side" id="side"></aside>
+  <div class="main">
+    <div class="topbar"><button onclick="document.body.classList.toggle('nav-open')" aria-label="Menü">☰</button><div class="tt" id="tt">Bilgi İşlem Organizasyonu</div></div>
+    <div class="wrap" id="view"></div>
+  </div>
+</div>
+<script>
+/* ====================== VERİ: KONULAR 1-6 ====================== */
+const T = [];
+
+/* ---------- 1 ---------- */
+T.push({id:1, t:"Bilgi İşlem Daire Başkanlığı Tarihçesi", s:"BİDB Tarihçesi", f:"1-bilgi-islem-daire-baskanligi-tarihcesi.pptx",
+n:`
+<h3>Kuruluş</h3>
+<ul>
+<li>Trakya Üniversitesi Bilgi İşlem Daire Başkanlığı (BİDB), <b>124 sayılı Kanun Hükmünde Kararname'nin 34. maddesi</b> uyarınca <b>1989</b> yılında kuruldu.</li>
+<li>Yeri: <b>Balkan Yerleşkesi</b>, <b>TUZEM</b> ile aynı binanın <b>1. katı</b>.</li>
+</ul>
+<h3>Görev yapan daire başkanları</h3>
+<div class="tw"><table><thead><tr><th>Başkan</th><th>Dönem</th><th>Not</th></tr></thead><tbody>
+<tr><td>Prof. Dr. Abdüssamed MARŞOĞLU</td><td>1990 – 1993</td><td><b>İlk</b> daire başkanı</td></tr>
+<tr><td>Yrd. Doç. Dr. Cavit TEZCAN</td><td>1994 – 2000</td><td>Vekaleten</td></tr>
+<tr><td>Yrd. Doç. Dr. Ercan BULUŞ</td><td>2000 – 2004</td><td>Vekaleten</td></tr>
+<tr><td>Yrd. Doç. Dr. Erdem UÇAR</td><td>2004 – 2012</td><td>Vekaleten</td></tr>
+<tr><td>Yrd. Doç. Dr. Deniz TAŞKIN</td><td>2012 – 2016</td><td>Vekaleten</td></tr>
+<tr><td>Prof. Dr. Hilmi KUŞÇU</td><td>17.04.2017 – 08.2024</td><td></td></tr>
+<tr><td>Doç. Dr. Deniz TAŞKIN</td><td>08.2024 – ...</td><td><b>Güncel</b> başkan (ikinci kez)</td></tr>
+</tbody></table></div>
+<h3>Misyon ve Vizyon</h3>
+<div class="grid2">
+<div class="mini"><div class="h">Misyon (bugün ne yapıyoruz?)</div>Akademik/idari birimler ve öğrencilerin ihtiyaç duyduğu bilişim hizmetlerini; sürekliliği olan yazılım ve donanım çözümleriyle, <b>uzman kadrolarla</b>, <b>toplam kalite ve bilgi güvenliği ilkeleri</b> doğrultusunda en üst düzeyde ve verimli sağlamak.</div>
+<div class="mini"><div class="h">Vizyon (nereye ulaşmak istiyoruz?)</div>Bilişim teknolojilerinden en üst düzeyde faydalanarak üniversitenin <b>hizmet kalitesi ve öğrenci memnuniyeti</b> bakımından <b>ulusal ve uluslararası rekabet gücü yüksek</b>, kurumsallaşmış bir üniversite olmasına katkı sağlamak.</div>
+</div>
+<h3>3 temel fonksiyon (yetki, görev ve sorumluluk)</h3>
+<div class="tw"><table><thead><tr><th>Fonksiyon</th><th>Başlıca görevler</th></tr></thead><tbody>
+<tr><td><b>1. Sistem Yönetim ve Planlama</b></td><td>İletişim ve ağ altyapısını kurmak, network güvenliği, antivirüs yönetimi, dış faktörleri incelemek, kapasite araştırması, Ar-Ge, verilerin saklanması/güvenliği/yedeklenmesi</td></tr>
+<tr><td><b>2. Yazılım Geliştirme ve Yönetim</b></td><td>Üniversitenin taleplerine göre yazılım geliştirmek, geliştirilen uygulamalara destek, yetki planlama, rapor ve analiz üretmek</td></tr>
+<tr><td><b>3. Donanım Sistemleri</b></td><td>Bilgisayar, yazıcı, ağ anahtarı ve çevre birimlerine destek; gerekirse dış servis talebi; istatistik ve kalite kontrol; <b>fizibilite</b> ve <b>teknik şartname</b> hazırlamak</td></tr>
+</tbody></table></div>
+<h3>Şube Müdürlükleri ve görevleri</h3>
+<div class="grid3">
+<div class="mini"><div class="h">Sistem Şube Müdürlüğü</div><ul>
+<li>Altyapı ve <b>network güvenliği</b></li>
+<li>Sanallaştırma sistemi; <b>Router / Ana Switch / Firewall</b> yönetimi</li>
+<li><b>5651 sayılı Kanun</b> gereği internet <b>trafik loglarını</b> tutmak ve saklamak</li>
+<li>Kablolu / kablosuz / <b>Eduroam</b> (üniversiteler arası kablosuz ağ)</li>
+<li>Birimlere <b>otomatik IP dağıtımı</b></li>
+<li>Web sunucuları, kurumsal web sayfaları, birimlere web alan adı açma</li>
+<li>Kurumsal <b>e-posta</b> (<code>@trakya.edu.tr</code>) hesapları</li>
+</ul></div>
+<div class="mini"><div class="h">Yazılım Şube Müdürlüğü</div><ul>
+<li>Kurumsal yazılımların geliştirilmesi</li>
+<li>Kurumsal web sayfası yazılımlarının tasarımı ve güncellenmesi</li>
+<li>Yazılımlar arası ilişkiyi sağlayacak uygulamalar</li>
+<li>Yazılım güncellemelerinin takibi</li>
+<li>Firmalara değişen ihtiyaçları bildirmek</li>
+</ul></div>
+<div class="mini"><div class="h">Donanım Şube Müdürlüğü</div><ul>
+<li>Bilgisayar, yazıcı, ağ anahtarı teknik desteği; arıza tespiti</li>
+<li>Windows, MS Office ve lisanslı programların <b>kurulumu</b></li>
+<li>Antivirüs yönetimi ve denetimi</li>
+<li><b>Switch konfigürasyonu</b></li>
+<li><b>Envanter</b> tutmak, <b>satın alma talebi</b>, <b>taşınır</b> işlemleri</li>
+</ul></div>
+</div>
+<h3>Bilgi ve teknolojik kaynaklar</h3>
+<ul>
+<li>Yazılımlar: <b>Microsoft Akademik Lisanslar</b> (Office365, Windows, Teams), <b>Kaspersky Anti Virüs</b>, <b>EBYS imza</b> yazılımları</li>
+<li>Bilgisayarlar: <b>31</b> masaüstü, <b>17</b> taşınabilir</li>
+</ul>
+<h3>Önemli faaliyetler (sayılarla)</h3>
+<ul>
+<li>Her yıl Microsoft ile <b>Kampüs Lisans</b> anlaşması; lisanslama <b>KMS sunucusu</b> üzerinden.</li>
+<li><b>3 yıllık</b> lisanslı yeni Güvenlik Duvarı alındı; log kayıt cihazına <b>2 yıllık</b> lisans güncellemesi.</li>
+<li>Kütüphane veri tabanlarına kampüs dışından erişim için <b>VPN</b> hizmeti.</li>
+<li>Ana internet çıkış hızı <b>ULAKBİM</b> tarafından <b>2021'de 1700 Mbps</b>'a yükseltildi.</li>
+<li>UPS odasında <b>2 adet 40 kVA</b> güç kaynağı; sistem/UPS odalarında yangın söndürme sistemi bakımı.</li>
+<li><b>IPS/Firewall</b> cihazının <b>içerik filtreleme</b> özelliğiyle erişim kontrolü.</li>
+<li><b>Yedekli yapıda Domain sunucu</b> kurulumu.</li>
+<li><b>ISO 27001:2013</b> BGYS kapsamında her yıl <b>sızma testleri dış kaynaklı firmaya</b> yaptırılır; ara denetimle sertifika 1 yıl uzatılır.</li>
+<li>Üniversite <b>Hastanesi</b> için ULAKBİM hattı arızasına karşı <b>GSM operatöründen</b> yedek hat (<b>2019</b>).</li>
+<li>Havsa MYO network altyapısı yenilendi; çeşitli birimlere <b>PoE'li kenar anahtar</b> (kablosuz cihaz adaptör sorunları için).</li>
+</ul>
+<h3>2025 Performans hedefleri</h3>
+<div class="tw"><table><thead><tr><th>Amaç</th><th>Göstergeler</th></tr></thead><tbody>
+<tr><td>1. Bilişim ve ağ hizmet kalitesi</td><td>ULAKBİM–merkez kampüs hızı <b>2500 Mbps</b>; ortalama yıllık kullanım <b>300 Mbps</b>; kenar anahtar <b>255</b> adet; kablosuz cihaz <b>550</b> adet; depolama artışı; Metro Ethernet <b>10 Mbps</b></td></tr>
+<tr><td>2. Web ve sosyal medya ile tanınırlık</td><td>Web sayfası tıklanma <b>5.000.000</b>; tanıtım filmi izlenme ve takipçi sayısı</td></tr>
+<tr><td>3. Öğrenci/personele bilgilendirme</td><td>SMS (kontür) sayısı, e-posta duyuru sayısı, internet memnuniyet oranları</td></tr>
+<tr><td>4. Bilgi ve bilişim güvenliği</td><td>Sızma testleri, <b>ISO 27001:2022</b> yıllık denetim, güvenlik duvarı ve loglama yazılımı lisans yenilemesi</td></tr>
+</tbody></table></div>
+<h3>Kurumsal kabiliyet: GZFT (SWOT)</h3>
+<div class="grid2">
+<div class="mini sw-s"><div class="h">Üstünlükler (iç, olumlu)</div><ul>
+<li>Trakya Üniversitesi'nin birimi olmak</li><li><b>ISO 27001</b> sertifikası</li><li>Yönetimin bilişime desteği</li><li><b>Teknopark'ın mevcut olması</b></li><li>ULAKBİM ile uyumlu çalışma, Kullanım Politikası Sözleşmesi</li><li>Personelin bilgi düzeyi ve özverisi</li></ul></div>
+<div class="mini sw-w"><div class="h">Zayıflıklar (iç, olumsuz)</div><ul>
+<li><b>Finansal kaynağın azlığı</b></li><li>ULAKBİM bağlantısı kesilirse <b>alternatif bağlantı olmaması</b></li><li>Kalifiye personel temininde güçlük</li><li>Hizmet içi eğitime zaman/kaynak ayrılamaması</li><li>Personelin mali ve sosyal haklarının yetersizliği</li></ul></div>
+<div class="mini sw-o"><div class="h">Fırsatlar (dış, olumlu)</div><ul>
+<li><b>Trakya Teknopark ile işbirliği</b> olanakları</li><li><b>Avrupa Birliği programları</b></li><li>Balkan üniversiteleriyle işbirliği</li><li>Fakültelerle işbirliği</li><li>Bilişimin geleceğe yön veren konu olması</li><li>Bölgenin büyük ve köklü üniversitesi olmak</li></ul></div>
+<div class="mini sw-t"><div class="h">Tehditler (dış, olumsuz)</div><ul>
+<li><b>Teknolojinin çok hızlı gelişmesi</b></li><li>Personelin yeni teknolojiye uyum zorluğu, <b>değişime direnç</b></li><li>24 saat hizmet zorunluluğu – kamu kurumunda mesai dışı çalıştırma zorluğu</li><li>Bilişim çalışanı ihtiyacı ile imkânların uyumsuzluğu</li><li><b>Yerleşkelerin fazla ve dağınık</b> olması</li><li>Yetişmiş elemanların işten ayrılması</li></ul></div>
+</div>
+<div class="box tip"><div class="bt">Sınav tuzağı</div>“Teknopark'ın <b>mevcut olması</b>” → <b>Üstünlük</b>; “Teknopark ile <b>işbirliği olanakları</b>” → <b>Fırsat</b>. İç kaynaklı olanlar Üstünlük/Zayıflık, dış çevreden gelenler Fırsat/Tehdit.</div>
+<h3>Varsayımlar</h3>
+<p>Bütçenin artırılacağı, yönetimin desteğinin süreceği, altyapı yatırımlarının ve kurum dışı eğitimlerin artacağı, <b>e-dönüşüm devlet projelerinin</b> devam edeceği varsayılır.</p>
+`,
+z:["Kuruluş: 1989 – 124 sayılı KHK md. 34","Yer: Balkan Yerleşkesi, TUZEM binası 1. kat","İlk başkan: Prof. Dr. Abdüssamed Marşoğlu (1990-93); güncel: Doç. Dr. Deniz Taşkın (08.2024-)","3 fonksiyon: Sistem Yönetim ve Planlama / Yazılım Geliştirme ve Yönetim / Donanım Sistemleri","5651 log kayıtları, firewall, Eduroam, otomatik IP, e-posta → Sistem Şube","OS kurulumu, switch konfigürasyonu, envanter, satın alma → Donanım Şube","Antivirüs: Kaspersky · MS lisans: KMS sunucusu","ULAKBİM hızı 2021: 1700 Mbps → 2025 hedefi: 2500 Mbps","UPS: 2 × 40 kVA · Hastane yedek hat: GSM (2019)","ISO 27001 (BGYS) – sızma testi dış kaynaklı firma, her yıl"],
+q:[
+["Trakya Üniversitesi Bilgi İşlem Daire Başkanlığı hangi yıl kurulmuştur?",["1989","1982","1993","2000","2007"],"124 sayılı KHK'nin 34. maddesi uyarınca 1989 yılında kurulmuştur."],
+["BİDB hangi mevzuat hükmü uyarınca kurulmuştur?",["124 sayılı KHK'nin 34. maddesi","2547 sayılı Kanun'un 1. maddesi","5651 sayılı Kanun'un 8. maddesi","657 sayılı Kanun'un 4. maddesi","6698 sayılı Kanun'un 12. maddesi"],"Kuruluş dayanağı 124 sayılı Kanun Hükmünde Kararname'nin 34. maddesidir."],
+["BİDB nerede hizmet vermektedir?",["Balkan Yerleşkesi'nde TUZEM ile aynı binanın 1. katında","Rektörlük binasının zemin katında","Mühendislik Fakültesi binasının bodrum katında","Merkez Kütüphane binasının 2. katında","Teknopark binasında"],"Balkan Yerleşkesi'nde, TUZEM ile aynı binanın 1. katındadır."],
+["BİDB'nin ilk daire başkanı kimdir?",["Prof. Dr. Abdüssamed Marşoğlu","Prof. Dr. Hilmi Kuşçu","Yrd. Doç. Dr. Erdem Uçar","Yrd. Doç. Dr. Cavit Tezcan","Doç. Dr. Deniz Taşkın"],"1990-1993 yılları arasında görev yapan Prof. Dr. Abdüssamed Marşoğlu ilk başkandır."],
+["Ağustos 2024'ten itibaren BİDB daire başkanı kimdir?",["Doç. Dr. Deniz Taşkın","Prof. Dr. Hilmi Kuşçu","Yrd. Doç. Dr. Ercan Buluş","Yrd. Doç. Dr. Erdem Uçar","Prof. Dr. Abdüssamed Marşoğlu"],"Deniz Taşkın 2012-2016'da vekaleten, 08.2024'ten itibaren yeniden başkandır."],
+["Prof. Dr. Hilmi Kuşçu hangi dönemde daire başkanlığı yapmıştır?",["2017 – 2024","2004 – 2012","2012 – 2016","1994 – 2000","2000 – 2004"],"17.04.2017 – 08.2024 arası görev yapmıştır."],
+["5651 sayılı Kanun uyarınca internet trafik log bilgisinin tutulması hangi birimin görevidir?",["Sistem Şube Müdürlüğü","Yazılım Şube Müdürlüğü","Donanım Şube Müdürlüğü","Basın ve Halkla İlişkiler","İdari ve Mali İşler Daire Başkanlığı"],"Log tutma; router/ana switch/firewall ve network güvenliği Sistem Şube Müdürlüğü'nün görevidir."],
+["Bilgisayarlara işletim sistemi/Office kurulumu, switch konfigürasyonu ve envanter takibi hangi birimin görevidir?",["Donanım Şube Müdürlüğü","Sistem Şube Müdürlüğü","Yazılım Şube Müdürlüğü","Strateji Daire Başkanlığı","Kütüphane Daire Başkanlığı"],"Bunlar Donanım Şube Müdürlüğü'nün görevleri arasındadır."],
+["“Kurumsal web sayfası hizmeti verecek yazılımların tasarlanması ve kurumsal yazılımların geliştirilmesi” hangi birimin görevidir?",["Yazılım Şube Müdürlüğü","Donanım Şube Müdürlüğü","Sistem Şube Müdürlüğü","Personel Daire Başkanlığı","Öğrenci İşleri Daire Başkanlığı"],"Yazılım üretimi ve web yazılımları Yazılım Şube Müdürlüğü'ndedir."],
+["Sunumda geçen “Eduroam” nedir?",["Üniversiteler arası kablosuz ağ hizmeti","Elektronik belge yönetim sistemi","Antivirüs yönetim konsolu","Öğrenci bilgi sistemi","Microsoft lisans sunucusu"],"Eduroam, üniversiteler arası kablosuz ağ (dolaşım) hizmetidir."],
+["Üniversitenin ana internet çıkış hızı 2021 yılında ULAKBİM tarafından kaç Mbps'a yükseltilmiştir?",["1700 Mbps","1000 Mbps","2500 Mbps","300 Mbps","10 Mbps"],"2021'de 1700 Mbps'a yükseltilmiştir."],
+["2025 performans hedeflerine göre ULAKBİM ile merkez kampüs arasındaki ağ hızının kaç Mbps'a çıkarılması hedeflenmektedir?",["2500 Mbps","1700 Mbps","5000 Mbps","300 Mbps","10000 Mbps"],"PG1.1: 2500 Mbps. (300 Mbps ortalama yıllık kullanım hedefidir.)"],
+["Üniversitede kullanılan Microsoft uygulamalarının lisanslaması hangi sunucu üzerinden yapılmaktadır?",["KMS sunucusu","DHCP sunucusu","DNS sunucusu","Proxy sunucusu","Mail sunucusu"],"Lisanslamalar KMS (Key Management Service) sunucusu üzerinden yapılır."],
+["BİDB'nin kullandığı antivirüs yazılımı hangisidir?",["Kaspersky","Norton","McAfee","Avast","ESET"],"Teknolojik kaynaklarda Kaspersky Anti Virüs yer alır."],
+["BİDB'de uygulanan bilgi güvenliği yönetim sistemi standardı hangisidir?",["ISO 27001","ISO 9001","ISO 14001","ISO 45001","ISO 50001"],"ISO 27001 Bilgi Güvenliği Yönetim Sistemi (BGYS) uygulanmaktadır."],
+["UPS odasında hangi güç kaynakları bulunmaktadır?",["2 adet 40 kVA","1 adet 100 kVA","3 adet 20 kVA","4 adet 10 kVA","2 adet 80 kVA"],"UPS odasında 2 adet 40 kVA güç kaynağı vardır."],
+["“ULAKBİM ile aramızdaki bağlantı kesilirse alternatif bir bağlantımızın olmaması” GZFT analizinde hangi başlıktadır?",["Zayıflık","Üstünlük","Fırsat","Tehdit","Varsayım"],"Kurumun kendi iç eksikliği olduğu için zayıflıktır."],
+["“Yerleşke sayısının fazla ve il-ilçelere dağınık olması” GZFT analizinde hangi başlıktadır?",["Tehdit","Zayıflık","Üstünlük","Fırsat","Varsayım"],"Sunumda Tehditler başlığında yer alır."],
+["Aşağıdakilerden hangisi BİDB'nin ÜSTÜNLÜKLERİNDEN biridir?",["ISO 27001 BGYS sertifikasına sahip olmak","Finansal kaynağın azlığı","Teknolojinin çok hızlı gelişmesi","Avrupa Birliği programları","Teknik personel teminindeki güçlük"],"ISO 27001 sertifikası üstünlüktür; diğerleri zayıflık, tehdit veya fırsattır."],
+["“Trakya Teknopark ile işbirliği olanakları” GZFT analizinde hangi başlıktadır?",["Fırsat","Üstünlük","Zayıflık","Tehdit","Varsayım"],"İşbirliği olanakları dış çevreden gelen fırsattır (Teknopark'ın mevcut olması ise üstünlüktür)."],
+["Üniversite Hastanesi'nin internet hattını yedeklemek için ne yapılmıştır?",["GSM operatöründen cihaz alınarak yedek hat kurulmuştur","İkinci bir ULAKBİM hattı çekilmiştir","Uydu bağlantısı kurulmuştur","Hastane interneti kapatılmıştır","Metro Ethernet hızı düşürülmüştür"],"2019'da GSM operatöründen cihaz alınarak ULAKBİM hattı arızasına karşı yedek oluşturulmuştur."]
+]});
+
+/* ---------- 2 ---------- */
+T.push({id:2, t:"Bilgi İşlem Yapılanması", s:"Bİ Yapılanması", f:"2-bilgi-islem-yapilanmasi.pptx",
+n:`
+<h3>Bilgi İşlem Merkezi nasıl bir yapıda olmalı?</h3>
+<ul>
+<li><b>Bağımsız</b>, her türlü etkiden (baskıdan) uzak</li>
+<li>Kararları uygulatma ve <b>yaptırım gücüne</b> sahip</li>
+<li>Bilgi sistemlerinin <b>standartlarını koyan</b> ve bunları <b>denetleyen</b></li>
+<li>Sistemin <b>koordinasyon</b> görevini üstlenen</li>
+</ul>
+<h3>Bilgi işlem sisteminin 8 unsuru</h3>
+<div class="flow"><span>1 Altyapı</span><span>2 Fiziki Donanım</span><span>3 Program</span><span>4 Sistem Yönetimi</span><span>5 Yönetim Masaları</span><span>6 Uygulamalar (İşletim Sistemi)</span><span>7 İnsan Kaynakları</span><span>8 Sistem Döngüsü</span></div>
+<div class="tw"><table><thead><tr><th>Unsur</th><th>Açıklama</th></tr></thead><tbody>
+<tr><td><b>1. Altyapı</b></td><td><b>Sabit altyapı:</b> birimlerin fiziki yapısına göre planlanır, <b>network ağ altyapısının temelini</b> oluşturur; network sisteminin büyüklüğüne göre tasarlanır.<br><b>Altyapı hizmet alanı:</b> alt birimlerin fiziki bağlantıları, network kurulumu, e-posta yazışmaları, bilgisayar teknik desteği.</td></tr>
+<tr><td><b>2. Fiziki Donanım</b></td><td>Bilgisayar, yazıcı, faks, modem, switch, hub, fotokopi, ekran, tarayıcı... Bilgi işlemdeki <b>tüm fiziksel unsurlar</b>. Donanım, sabit altyapıyı oluşturur; işletim sistemi, veritabanı ve yazılımlar bunun üzerine kurulur.</td></tr>
+<tr><td><b>3. Program</b></td><td>Server üzerindeki programlar bağlı bilgisayarların programlarını çalıştırır; güvenliği sağlar, uygulamaları sınırlar.<br><b>Server programları:</b> Güvenlik Duvarı (Firewall), Koruyucu Program (Anti Virüs), Mail Sunucu (Yönetim Paneli), Bilgi İşlem Modülleri (Teknik Yönetim Programları), Web Programları, Server Yönetim Programları.</td></tr>
+<tr><td><b>4. Sistem Yönetimi</b></td><td>Bilgi işlemin <b>tümünü kapsayan</b> yönetim; planlama yapar, yeni projeler üretir. Kurumun ihtiyaçlarını analiz edip bilgisayar sistemlerini tasarlama, kurma, destekleme, geliştirme, sürekliliğini ve güvenliğini sağlama işi.<br><b>3 alt yönetim:</b> Network Yönetimi · Web Yönetimi · Teknik Yönetim (Teknik Destek)</td></tr>
+<tr><td><b>5. Yönetim Masaları</b></td><td>Bilgi işlem yönetimini kolaylaştırır; <b>organizasyon ve esneklik</b> sağlar; her masanın kendi çalışma esasları vardır. Örn: web masası, network masası, donanım masası, veri hazırlama masası, eğitim ve Ar-Ge masası, projeler masası.</td></tr>
+<tr><td><b>6. Uygulamalar (İşletim Sistemi)</b></td><td>Server bilgisayarlar üzerindeki tüm program ve yazılımların çalıştırılması. <b>4 bölüm:</b> Server Uygulamaları · İnteraktif Uygulamalar · İnternet Uygulamaları · Güvenlik Uygulamaları</td></tr>
+<tr><td><b>7. İnsan Kaynakları</b></td><td>Bilgi işlemdeki yönetimin <b>niteliğini</b> gösterir (tablo aşağıda).</td></tr>
+<tr><td><b>8. Sistem Döngüsü</b></td><td>İnsan ve donanımların <b>hedefe yönelik birlikte hareketinin çerçevesi</b>; tüm sistemlerin çalışmasını, yönetimini ve uygulanmasını kapsar.</td></tr>
+</tbody></table></div>
+<h3>İnsan kaynakları: unvan → görev</h3>
+<div class="tw"><table><thead><tr><th>Unvan</th><th>Görev</th></tr></thead><tbody>
+<tr><td>Sistem Mühendisi</td><td>Sistem yönetimi</td></tr>
+<tr><td>Yazılım Mühendisi</td><td>Yazılım geliştirme</td></tr>
+<tr><td>Web/Tasarım Uygulama Editörü</td><td>Web uygulamaları</td></tr>
+<tr><td>Proje Uzmanı</td><td>Projeler üretme</td></tr>
+<tr><td>Veri Hazırlama Uzmanı</td><td>Veri kontrol</td></tr>
+</tbody></table></div>
+<h3>Bilgi işlem nasıl kurulur? (3 aşama)</h3>
+<p><b>Yol haritası</b>, <b>kurumsal ihtiyaçlar tespit edildikten sonra</b> çıkarılır ve 3 aşamada adım adım uygulanır.</p>
+<div class="grid3">
+<div class="mini
